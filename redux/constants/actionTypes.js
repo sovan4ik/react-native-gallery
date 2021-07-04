@@ -1,0 +1,2 @@
+export const SET_DATA_STATE = 'SET_DATA_STATE'
+export const SET_CURRENT_PHOTO = 'SET_CURRENT_PHOTO'

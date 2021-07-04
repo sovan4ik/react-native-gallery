@@ -1,21 +1,34 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {Provider} from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import rootReducer from './redux/reducers/rootReducer';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+import homeScreen from './components/homeScreen/homeScreen';
+import singlePhotoScreen from './components/singlePhotoScreen/singlePhotoScreen';
+
+const Stack = createStackNavigator();
+
+const store = createStore(
+  rootReducer,
+  applyMiddleware(thunk)
   );
-}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default class App extends React.Component {
+
+  render() {
+      return (
+        <Provider store={store}>
+          <NavigationContainer>
+              <Stack.Navigator initialRouteName="homeScreen">
+                <Stack.Screen name="homeScreen" component={homeScreen} />
+                <Stack.Screen name="singlePhoto" component={singlePhotoScreen} />
+              </Stack.Navigator>
+          </NavigationContainer>
+        </Provider>
+      );
+  }
+};
